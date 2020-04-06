@@ -1,6 +1,7 @@
 package main
 
 import (
+	"time"
 	"bufio"
 	"fmt"
 	"io"
@@ -34,6 +35,12 @@ func main() {
 }
 
 func handle(connection net.Conn) {
+	// Set connection timeout: 30 seconds
+	err := connection.SetDeadline(time.Now().Add(30 * time.Second))
+	if err != nil {
+		log.Fatalln("CONNECTION TIMEOUT")
+	}
+
 	// Initialize scanner loop
 	scanner := bufio.NewScanner(connection)
 	for scanner.Scan() {
